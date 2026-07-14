@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}用户管理 - OpenVPN 管理系统{% endblock %}
+
+{% block content %}
+<!-- 添加新用户卡片 -->
+<div class="card">
+    <h3>添加新用户</h3>
+    <form method="POST" action="{{ url_for('add_user') }}" class="form-inline">
+        <div class="form-group">
+            <input type="text" name="username" placeholder="用户名（字母/数字/下划线，3-32位）" required class="form-control" style="width: 220px;">
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" placeholder="密码（至少6位）" required class="form-control" style="width: 180px;">
+        </div>
+        <div class="form-group">
+            <input type="text" name="notes" placeholder="备注（可选）" class="form-control" style="width: 180px;">
+        </div>
+        <button type="submit" class="btn btn-success">添加用户</button>
+    </form>
+</div>
+
+<!-- 用户列表卡片 -->
+<div class="card">
+    <h3>用户列表</h3>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>创建时间</th>
+                    <th>状态</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>
+                        <strong>{{ user.username }}</strong>
+                        {% if user.username == 'admin' %}
+                            <span class="badge badge-admin">管理员</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.created_at[:19] if user.created_at else '-' }}</td>
+                    <td>
+                        {% if user.is_active %}
+                            <span class="badge badge-active">启用</span>
+                        {% else %}
+                            <span class="badge badge-inactive">禁用</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.notes or '-' }}</td>
+                    <td class="action-cell">
+                        <!-- 启用/禁用按钮 -->
+                        <form method="POST" action="{{ url_for('edit_user', user_id=user.id) }}" style="display: inline;">
+                            <input type="hidden" name="action" value="toggle_status">
+                            <button type="submit" class="btn btn-sm {% if user.is_active %}btn-warning{% else %}btn-success{% endif %}">
+                                {% if user.is_active %}禁用{% else %}启用{% endif %}
+                            </button>
+                        </form>
+
+                        {% if user.username != 'admin' %}
+                        <!-- 重置密码 -->
+                        <form method="POST" action="{{ url_for('edit_user', user_id=user.id) }}" style="display: inline;" class="reset-form">
+                            <input type="hidden" name="action" value="reset_password">
+                            <input type="password" name="new_password" placeholder="新密码" class="form-control form-control-sm" style="width: 100px;" required>
+                            <button type="submit" class="btn btn-sm btn-primary">重置密码</button>
+                        </form>
+
+                        <!-- 删除按钮 -->
+                        <form method="POST" action="{{ url_for('edit_user', user_id=user.id) }}" style="display: inline;">
+                            <input type="hidden" name="action" value="delete">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('确定删除用户 {{ user.username }}？此操作不可恢复！')">删除</button>
+                        </form>
+
+                        <!-- 下载配置 -->
+                        <a href="{{ url_for('generate_client_config', username=user.username) }}" class="btn btn-sm btn-info">下载配置</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="empty-message">暂无用户数据</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

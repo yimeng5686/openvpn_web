@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}OpenVPN 管理系统{% endblock %}</title>
+    <!-- 引入外部样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <h1>OpenVPN 管理系统</h1>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">仪表盘</a>
+            <a href="{{ url_for('users') }}" class="{% if request.endpoint == 'users' or request.endpoint == 'add_user' %}active{% endif %}">用户管理</a>
+            <a href="{{ url_for('online_users') }}" class="{% if request.endpoint == 'online_users' %}active{% endif %}">在线监控</a>
+            <a href="{{ url_for('logs') }}" class="{% if request.endpoint == 'logs' %}active{% endif %}">连接日志</a>
+            <a href="{{ url_for('client_download') }}" class="{% if request.endpoint == 'client_download' %}active{% endif %}">客户端下载</a>
+            <a href="{{ url_for('logout') }}" class="logout-btn">退出登录</a>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <div class="container">
+        <!-- Flash 消息提示 -->
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">
+                            <span class="flash-icon">
+                                {% if category == 'success' %}✓{% elif category == 'danger' %}✗{% elif category == 'info' %}ℹ{% else %}⚠{% endif %}
+                            </span>
+                            {{ message }}
+                            <button class="flash-close" onclick="this.parentElement.remove()">&times;</button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- 页面内容 -->
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>OpenVPN Web 管理系统 &copy; 2024 | 当前用户: {{ current_user.username }}</p>
+    </footer>
+
+    <!-- 引入外部脚本 -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

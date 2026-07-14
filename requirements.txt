@@ -1,0 +1,14 @@
+# Flask Web 框架
+flask==3.0.3
+# Flask 登录管理
+flask-login==0.6.3
+# Flask WTForms 表单验证
+flask-wtf==1.2.1
+# WSGI 生产服务器
+waitress==3.0.0
+# 密码哈希加密
+bcrypt==4.2.0
+# .env 文件加载
+python-dotenv==1.0.1
+# PyInstaller 打包工具
+pyinstaller==6.10.0

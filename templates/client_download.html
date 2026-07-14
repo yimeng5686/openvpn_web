@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}客户端下载 - OpenVPN 管理系统{% endblock %}
+
+{% block content %}
+<!-- 客户端下载卡片 -->
+<div class="card">
+    <h3>OpenVPN 客户端下载</h3>
+    <p class="text-muted">请根据您的操作系统下载对应的 OpenVPN 客户端软件：</p>
+
+    <div class="download-grid">
+        <div class="download-item">
+            <div class="download-icon">🖥️</div>
+            <h4>Windows</h4>
+            <a href="https://openvpn.net/client-connect-vpn-for-windows/" target="_blank" class="btn btn-primary btn-sm">下载</a>
+        </div>
+        <div class="download-item">
+            <div class="download-icon">🍎</div>
+            <h4>macOS</h4>
+            <a href="https://openvpn.net/client-connect-vpn-for-mac/" target="_blank" class="btn btn-primary btn-sm">下载</a>
+        </div>
+        <div class="download-item">
+            <div class="download-icon">🐧</div>
+            <h4>Linux</h4>
+            <a href="https://openvpn.net/client-connect-vpn-for-linux/" target="_blank" class="btn btn-primary btn-sm">下载</a>
+        </div>
+        <div class="download-item">
+            <div class="download-icon">📱</div>
+            <h4>Android</h4>
+            <a href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn" target="_blank" class="btn btn-primary btn-sm">下载</a>
+        </div>
+        <div class="download-item">
+            <div class="download-icon">📱</div>
+            <h4>iOS</h4>
+            <a href="https://apps.apple.com/app/openvpn-connect/id590379981" target="_blank" class="btn btn-primary btn-sm">下载</a>
+        </div>
+    </div>
+</div>
+
+<!-- 配置文件说明卡片 -->
+<div class="card">
+    <h3>获取配置文件</h3>
+    <div class="steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>前往用户管理</h4>
+                <p>在 <a href="{{ url_for('users') }}">用户管理</a> 页面找到需要配置的用户</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>下载配置文件</h4>
+                <p>点击用户对应的"下载配置"按钮，获取 .ovpn 配置文件</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>导入客户端</h4>
+                <p>将下载的 .ovpn 文件导入 OpenVPN 客户端</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>输入凭据连接</h4>
+                <p>连接时输入用户名和密码即可建立 VPN 连接</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

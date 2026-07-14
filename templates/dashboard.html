@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}仪表盘 - OpenVPN 管理系统{% endblock %}
+
+{% block content %}
+<!-- 统计卡片区域 -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon" style="background: #3498db;">👥</div>
+        <div class="stat-number">{{ stats.total_users }}</div>
+        <div class="stat-label">总用户数</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: #27ae60;">📊</div>
+        <div class="stat-number">{{ stats.active_users }}</div>
+        <div class="stat-label">7日活跃用户</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: #e67e22;">🟢</div>
+        <div class="stat-number">{{ stats.online_users }}</div>
+        <div class="stat-label">当前在线</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: #9b59b6;">📈</div>
+        <div class="stat-number">{{ stats.today_connects }}</div>
+        <div class="stat-label">今日连接次数</div>
+    </div>
+</div>
+
+<!-- 系统状态卡片 -->
+<div class="card">
+    <h3>系统状态</h3>
+    <div class="status-grid">
+        <div class="status-item">
+            <span class="status-label">OpenVPN 服务:</span>
+            <span class="status-value {% if service_status == '运行中' %}status-running{% elif service_status == '已停止' %}status-stopped{% else %}status-unknown{% endif %}">
+                {{ service_status }}
+            </span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">数据库:</span>
+            <span class="status-value">SQLite</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">当前用户:</span>
+            <span class="status-value">{{ current_user.username }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- 快速操作卡片 -->
+<div class="card">
+    <h3>快速操作</h3>
+    <div class="action-buttons">
+        <a href="{{ url_for('users') }}" class="btn btn-primary">管理用户</a>
+        <a href="{{ url_for('online_users') }}" class="btn btn-success">查看在线用户</a>
+        <a href="{{ url_for('logs') }}" class="btn btn-info">查看日志</a>
+        <a href="{{ url_for('cleanup_sessions') }}" class="btn btn-warning" onclick="return confirm('确定要清理过期会话吗？')">清理过期会话</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenVPN 管理系统 - 登录</title>
+    <style>
+        /* 登录页面独立样式 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .login-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            width: 380px;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .login-header .logo {
+            width: 64px;
+            height: 64px;
+            background: #2c3e50;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .login-header h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+        .login-header p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #2c3e50;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 0.85rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .login-btn:hover {
+            background: #2980b9;
+        }
+        .flash {
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .flash-success { background: #d4edda; color: #155724; }
+        .flash-danger { background: #f8d7da; color: #721c24; }
+        .flash-info { background: #d1ecf1; color: #0c5460; }
+        .flash-warning { background: #fff3cd; color: #856404; }
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #95a5a6;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">VPN</div>
+            <h2>OpenVPN 管理系统</h2>
+            <p>请输入管理员账号登录</p>
+        </div>
+
+        <!-- Flash 消息提示 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- 登录表单 -->
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" placeholder="请输入用户名" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" placeholder="请输入密码" required>
+            </div>
+            <button type="submit" class="login-btn">登 录</button>
+        </form>
+
+        <div class="login-footer">
+            OpenVPN Web Management System v1.0
+        </div>
+    </div>
+</body>
+</html>

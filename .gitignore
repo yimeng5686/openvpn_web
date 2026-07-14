@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.spec.bak
+
+# 虚拟环境
+.venv/
+venv/
+
+# 环境变量（包含敏感信息，不纳入版本控制）
+.env
+
+# 数据库
+auth.db
+
+# 临时文件
+temp/
+*.ovpn
+
+# 日志
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 操作系统
+Thumbs.db
+Desktop.ini

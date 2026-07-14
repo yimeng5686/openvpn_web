@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}连接日志 - OpenVPN 管理系统{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h3>连接日志</h3>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>时间</th>
+                    <th>用户名</th>
+                    <th>客户端IP</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.connect_time[:19] if log.connect_time else '-' }}</td>
+                    <td><strong>{{ log.username }}</strong></td>
+                    <td>{{ log.client_ip or '-' }}</td>
+                    <td>
+                        {% if 'connected' in log.status %}
+                            <span class="badge badge-active">{{ log.status }}</span>
+                        {% elif 'failed' in log.status %}
+                            <span class="badge badge-inactive">{{ log.status }}</span>
+                        {% else %}
+                            <span class="badge badge-warning">{{ log.status }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="empty-message">暂无日志记录</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 分页控件 -->
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="?page={{ page - 1 }}" class="btn btn-sm btn-primary">上一页</a>
+        {% endif %}
+
+        <span class="page-info">第 {{ page }} / {{ total_pages }} 页</span>
+
+        {% if page < total_pages %}
+        <a href="?page={{ page + 1 }}" class="btn btn-sm btn-primary">下一页</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
